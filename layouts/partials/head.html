@@ -13,7 +13,12 @@
         {{ if .IsHome }}
             {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }} {{ end }}
         {{ else }}
-            {{ .Title }} :: {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }}{{ end }}
+            {{ if isset .Params "pagetitle" }}
+                {{ .Params.pageTitle }}
+            {{ else }}
+                {{ .Title }}
+            {{ end }}
+            :: {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }}{{ end }}
         {{ end }}
     </title>
 {{ end }}
@@ -26,11 +31,11 @@
 {{ $style := resources.Get "scss/main.scss" | resources.ToCSS $options | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
-{{ range $val := $.Site.Params.customCSS }}
+<!-- {{ range $val := $.Site.Params.customCSS }}
     {{ if gt (len $val) 0 }}
         <link rel="stylesheet" type="text/css" href="{{ $val }}">
     {{ end }}
-{{ end }}
+{{ end }} -->
 
 <!-- Icons -->
 {{- partial "favicons.html" . }}
